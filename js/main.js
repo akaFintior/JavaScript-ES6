@@ -13,9 +13,12 @@ const renderProduct = (title, price) => {
             </div>`
 };
 
-const renderPage = list => {
-    const productsList = list.map(item => renderProduct(item.title, item.price));
-    document.querySelector('.products').innerHTML = productsList;
-};
+
+  // чтобы сократить функцию, избавимся от необходимости создавать переменную, которую сразу же присваиваем
+  // теперь функция выполняет лишь одну операцию, можно избавиться от фигурных скобок
+
+const renderPage = list => document.querySelector('.products').innerHTML = list.map(item => renderProduct(item.title, item.price)).join('');
+  // list.map - возвращает новый массив, в котором элементы будут разделены запятой, дабы избежать этого
+  // следует сменить разъединитель элементов на пустую строку при помощи метода join()
 
 renderPage(products);
