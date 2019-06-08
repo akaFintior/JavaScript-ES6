@@ -36,11 +36,16 @@ class Cart {
   }
   _render(){
     const block = document.querySelector(this.container);
+    block.innerHTML = "";
+    this.products = [];
     for (let item of this.data){
         const product = new ItemInCart(item);
         this.products.push(product);
         block.insertAdjacentHTML('beforeend', product.render());
     }
+    document.querySelectorAll('.remove').forEach(elem => {
+      elem.addEventListener('click', this._removeItem)
+    })
   }
   _getProducts(){
     return fetch(`${API}/getBasket.json`)
@@ -51,8 +56,27 @@ class Cart {
         })
         .catch(error => console.log(error));
   }
-  _addToCart(product){}
-  _removeItem(product){} 
+  _addToCart(event){
+    for(let item of cart.data){
+      if (event.target.parentNode.children[0].innerText === item.product_name){
+        item.quantity++;
+      }
+    }
+    // никак не придумаю, как добавить обЪект продукта в корзину по кнопке, если его там не было до этого
+    return cart._render();
+  }
+  _removeItem(event){
+    for (let item of cart.data) {
+      if (item.product_name === event.target.parentNode.children[0].alt) {
+        if (item.quantity > 1) {
+          item.quantity--;
+        } else {
+          cart.data = cart.data.filter(product => product !== item);
+        }
+      }
+    }
+    return cart._render();
+  } 
 }
 
 
@@ -112,8 +136,11 @@ class ProductsList {
       for (let item of this.data){
           const product = new ProductItem(item);
           this.allProducts.push(product);
-          block.insertAdjacentHTML('beforeend', product.render());
+          block.insertAdjacentHTML('beforeend', product.render());         
       }
+      document.querySelectorAll('.buy-btn').forEach(elem => {
+        elem.addEventListener('click', cart._addToCart)
+      })
   }
 }
 
