@@ -29,10 +29,10 @@ class Cart {
   }
   _countCartTotal() {
     this.price = 0;
-    for (let item of this.products){
-        this.priceTotal += item.price*item.quantity;
+    for (let item of cart.products){
+        this.price += item.price*item.quantity;
     }
-    return this.priceTotal;
+    return this.price;
   }
   _render(){
     const block = document.querySelector(this.container);
@@ -57,12 +57,22 @@ class Cart {
         .catch(error => console.log(error));
   }
   _addToCart(event){
+    let isInCart = false;
     for(let item of cart.data){
       if (event.target.parentNode.children[0].innerText === item.product_name){
         item.quantity++;
+        isInCart = true;
       }
     }
-    // никак не придумаю, как добавить обЪект продукта в корзину по кнопке, если его там не было до этого
+    if (!isInCart) {
+      let item = {
+        product_name: event.target.parentElement.children[0].innerText,
+        price: +event.target.parentElement.children[1].innerText,
+        quantity: 1
+      }
+      console.log(event.target.parentElement);
+      cart.data.push(item);
+    }
     return cart._render();
   }
   _removeItem(event){
@@ -70,9 +80,7 @@ class Cart {
       if (item.product_name === event.target.parentNode.children[0].alt) {
         if (item.quantity > 1) {
           item.quantity--;
-        } else {
-          cart.data = cart.data.filter(product => product !== item);
-        }
+        } else cart.data = cart.data.filter(product => product !== item);
       }
     }
     return cart._render();
