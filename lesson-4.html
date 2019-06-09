@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    let readTextFile = (file, cb) => {
+        let rawFile = new XMLHttpRequest();
+        rawFile.open("GET", file, false);
+        rawFile.onreadystatechange = () => {
+            if(rawFile.readyState === 4) {
+                if(rawFile.status === 200 || rawFile.status == 0) {
+                    let allText = rawFile.responseText;
+                        // получили файл, теперь нужно его отформатировать. Заменим:
+                    let newFile = allText.replace(/'\n\s*/g, '"\n');   // одинарную ковычку перед переносом строки
+                                                        // и пробелы в начале строки, что выделяются на фоне
+                    newFile = newFile.replace(/\s'/g, '"');     // одинарную ковычку после пробела
+                    newFile = newFile.replace(/'\s/g, '"\n');   // одинарную ковычку перед пробелом
+                    newFile = newFile.replace(/'$/, '"');       // одинарную ковычкку в самом конце файла
+                    cb(newFile);
+                }
+            }
+        }
+        rawFile.send(null);
+    }
+    let linkToFile = 'file:///home/akanoname/Documents/JavaScript-ES6/texttoreplace.txt';
+    let myFile = readTextFile(linkToFile, console.log);
+    
+    
+    </script>
+</body>
+</html>
