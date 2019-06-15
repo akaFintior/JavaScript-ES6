@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <form class="form" method="post" action="#">
+        <div class="form-row">
+            <div class="form-group col-6">
+                <label for="name">Представьтесь, пожалуйста: <span style="color: red">*</span></label>
+                <input type="text" name="name" id="name" onkeyup="checkParams()" placeholder="Как к вам обращаться?"
+                    required />
+            </div>
+            <div class="form-group col-6">
+                <label for="mail">Укажите ваш email: <span style="color: red">*</span></label>
+                <input type="email" name="email" id="email" onkeyup="checkParams()" placeholder="Email" required />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="phone">Укажите ваш телефон: <span style="color: red">*</span></label>
+            <input type="tel" name="phone" id="phone" onkeyup="checkParams()" placeholder="+7(000)000-0000" required />
+        </div>
+        <div class="form-group">
+            <label for="message">Доп. информация:</label>
+            <textarea name="message"></textarea>
+        </div>
+        <div class="pt-3">
+            <input type="submit" id="submit" class="btn" value="Отправить" onsubmit="checkParams()" disabled />
+            <button type="button" class="btn" onclick="form.reset()">Очистить</button>
+        </div>
+        <div class="py-3">
+            <small>Поля отмеченные звездочкой <span style="color: red">*</span> являются обязательными для
+                заполнения.</small>
+        </div>
+    </form>
+
+    <script>
+        function checkParams() {
+            let name = document.querySelector('#name').value;
+            let email = document.querySelector('#email').value;
+            let phone = document.querySelector('#phone').value;
+            let regName = new RegExp("^[A-z]+$");
+            let regEmail = new RegExp("^.+@.+\..+$", "i");
+            let regPhone = new RegExp("^\\+\\d\\(\\d{3}\\)\\d{3}\\-\\d{4}$");
+            // console.log(regName.test(name));
+            // console.log(regEmail.test(email));
+            // console.log(regPhone.test(phone));
+            if (regName.test(name) && regEmail.test(email) && regPhone.test(phone)) {
+                document.querySelector('#submit').removeAttribute('disabled');
+            } else {
+                document.querySelector('#submit').setAttribute('disabled', 'disabled');
+            }
+
+        }
+    </script>
+
+    <script>
+        let readTextFile = (file, cb) => {
+            let rawFile = new XMLHttpRequest();
+            rawFile.open("GET", file, false);
+            rawFile.onreadystatechange = () => {
+                if (rawFile.readyState === 4) {
+                    if (rawFile.status === 200 || rawFile.status == 0) {
+                        let allText = rawFile.responseText;
+                        // получили файл, теперь нужно его отформатировать. Заменим:
+                        let newFile = allText.replace(/'\n\s*/g,
+                            '"\n'); // одинарную ковычку перед переносом строки
+                        // и пробелы в начале строки, что выделяются на фоне
+                        newFile = newFile.replace(/\s'/g, '"'); // одинарную ковычку после пробела
+                        newFile = newFile.replace(/'\s/g, '"\n'); // одинарную ковычку перед пробелом
+                        newFile = newFile.replace(/'$/, '"'); // одинарную ковычкку в самом конце файла
+                        
+                        // форматирование с границей слова
+                        let newFile1 = allText.replace(/\s\'\b/g, '"'); // в начале строки, после (one: two:)
+                        newFile1 = newFile.replace(/[^\w]\'\s/g, '"\n'); // в конце строки
+                        cb(newFile);
+                        cb(newFile1);
+                    }
+                }
+            }
+            rawFile.send(null);
+        }
+        let linkToFile = 'file:///home/akanoname/Documents/JavaScript-ES6/texttoreplace.txt';
+        let myFile = readTextFile(linkToFile, console.log);
+    </script>
+</body>
+
+</html>
