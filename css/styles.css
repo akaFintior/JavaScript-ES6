@@ -7,6 +7,8 @@ header {
           justify-content: flex-end;
   height: 50px;
   background-color: yellow;
+  margin-bottom: 50px;
+  position: relative;
 }
 
 .products {
@@ -71,5 +73,28 @@ header {
           box-shadow: inset 0px 0px 5px #c1c1c1;
   outline: none;
   color: red;
+}
+
+.cart {
+  position: absolute;
+  top: 40px;
+  width: 200px;
+}
+
+.cart-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.remove {
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  cursor: pointer;
 }
 /*# sourceMappingURL=styles.css.map */
