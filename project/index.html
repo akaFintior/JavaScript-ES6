@@ -19,7 +19,10 @@
         </form>
         <button class="btn-cart" @click="toggleBasket">Корзина</button>
         <div class="cart-block" :class="showCart">
-             <div class="cart-item" v-for="product of productsInCart" :key="product.id_product">
+            <div v-if="productsInCart.length === 0" class="empty">
+                Basket is empty!
+            </div>
+             <div v-else class="cart-item" v-for="product of productsInCart" :key="product.id_product">
                  <div class="product-bio">
                     <img :src="imgCart" :alt="product.product_name">
                     <div class="product-desc">
@@ -38,7 +41,7 @@
 </header>
 <main>
     <div class="products">
-        <div class="product-item" :class="matchNotFound" v-for="product of products" :key="product.id_product">
+        <div class="product-item" v-for="product of filtered" :key="product.id_product">
             <img :src="imgCatalog" :alt="product.product_name">
             <div class="desc">
                 <h3>{{product.product_name}}</h3>

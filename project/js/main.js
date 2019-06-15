@@ -5,22 +5,17 @@ const app = new Vue({
     data: {
         catalogUrl: `/catalogData.json`,
         products: [],
+        filtered: [],
         imgCatalog: `https://placehold.it/200x150`,
         imgCart: `https://placehold.it/60x60`,
         isVisible: false,
         productsInCart: [],
-        searchLine: "",
-        productInvisible : false
+        searchLine: "", 
     },
     computed: {
         showCart(){
             return {
                 invisible: !this.isVisible,
-            }
-        },
-        matchNotFound(){
-            return {
-                invisible: this.productInvisible,
             }
         }
     },
@@ -49,14 +44,9 @@ const app = new Vue({
             this.isVisible = !this.isVisible;
         },
         filterGoods(){
-            let re = new RegExp(this.searchLine);
-            for(let el of this.products){
-                if (!el.product_name.match(re)){
-                    console.log('no match');
-                    this.productInvisible = !this.productInvisible;
-                    el.matchNotFound;
-                }
-            }
+            const re = new RegExp(this.searchLine, 'i');
+            this.filtered = this.products.filter(el => re.test(el.product_name));
+            console.log(this.filtered);
         }
     },
     mounted(){
@@ -72,6 +62,7 @@ const app = new Vue({
                     this.products.push(el);
                 }
             })
+        this.filtered = this.products;
     }
 })
 
