@@ -6,6 +6,7 @@ const app = new Vue({
         catalogUrl: `/catalogData.json`,
         products: [],
         imgCatalog: `https://placehold.it/200x150`,
+        imgCart: `https://placehold.it/60x60`,
         isVisible: false,
         productsInCart: [],
         searchLine: "",
@@ -30,8 +31,19 @@ const app = new Vue({
                 .catch(error => console.log(error))
         },
         addProduct(product){
-            console.log(product);
-            console.log(product.id_product)
+            let prod = Object.assign({quantity: 1}, product);
+            let find = this.productsInCart.find(el => el.id_product === prod.id_product);
+            if(find){
+                find.quantity++;
+            } else this.productsInCart.push(prod);
+            console.log(product.id_product);
+        },
+        removeProduct(){
+            console.log(+event.target.dataset.id);
+            let find = this.productsInCart.find(el => el.id_product === +event.target.dataset.id);
+            if (find.quantity === 1){
+                this.productsInCart.splice(this.productsInCart.indexOf(find), 1);
+            } else find.quantity--;
         },
         toggleBasket(){
             this.isVisible = !this.isVisible;
