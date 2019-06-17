@@ -11,13 +11,7 @@
 <header>
     <div class="logo">E-shop</div>
     <div class="cart">
-        <form action="#" method="post" class="search-form" @submit.prevent="filter">
-            <input type="text" class="search-field" v-model="userSearch">
-            <button class="btn-search" type="submit">
-                <i class="fas fa-search"></i>
-            </button>
-        </form>
-
+        <search ref="search"></search>
         <cart ref="cart"></cart>
     </div>
 </header>
@@ -29,6 +23,7 @@
 <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js" integrity="sha384-0pzryjIRos8mFBWMzSSZApWtPl/5++eIfzYmTgBBmXYdhvxPc+XcFEk+zJwDgWbP" crossorigin="anonymous"></script>
 <script src="js/ProductsComponent.js"></script>
 <script src="js/CartComponent.js"></script>
+<script src="js/SearchComponent.js"></script>
 <script defer src="js/main.js"></script>
 </body>
 </html>
